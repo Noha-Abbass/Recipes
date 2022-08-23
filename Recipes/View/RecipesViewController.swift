@@ -15,6 +15,7 @@ class RecipesViewController: UIViewController {
     
     var recipeViewModel = RecipeSearchViewModel()
     private let pageLimit = 10
+    var query = ""
     
     enum TableRowType : Int {
         case recipe
@@ -25,12 +26,8 @@ class RecipesViewController: UIViewController {
         super.viewDidLoad()
         
         filtersCollectionView.register(UINib(nibName: "FilterCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
+        searchBar.delegate = self
         
-        recipeViewModel.getRecipes(query: "chicken"){ isSuccess in
-            if isSuccess {
-                self.recipesTableView.reloadData()
-            }
-        }
     }
 }
 
@@ -99,5 +96,26 @@ extension RecipesViewController: UICollectionViewDelegate, UICollectionViewDataS
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! FilterCollectionViewCell
         cell.configure(with: Constants.FILTERS_ARRAY[indexPath.row])
         return cell
+    }
+}
+
+extension RecipesViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        query = searchText
+    }
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !query.isEmpty {
+            recipeViewModel.recipesList = []
+            recipeViewModel.getRecipes(query: query) { (isSuccess) in
+                if isSuccess {
+                    self.recipesTableView.reloadData()
+                } else {
+                    print("no suitable data for query")
+                }
+            }
+        }
+        query = ""
     }
 }
