@@ -31,6 +31,8 @@ class RecipesViewController: UIViewController {
         super.viewDidLoad()
         
         filtersCollectionView.register(UINib(nibName: "FilterCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
+        recipesTableView.register(UINib(nibName: "RecipeTableViewCell", bundle: nil), forCellReuseIdentifier: "cell")
+        recipesTableView.register(UINib(nibName: "LoadingTableViewCell", bundle: nil), forCellReuseIdentifier: "loadingCell")
         recipesTableView.isHidden = true
         filtersCollectionView.isHidden = true
         searchBar.delegate = self
@@ -55,17 +57,54 @@ extension RecipesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! UITableViewCell
         guard let tableRowType = TableRowType(rawValue: indexPath.section) else { return UITableViewCell() }
         
         switch tableRowType {
         case .recipe:
-            cell.textLabel?.text = isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.label : recipeViewModel.recipesList[indexPath.row].recipe.label
+            var cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RecipeTableViewCell
+            cell.imageUrl = isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.image : recipeViewModel.recipesList[indexPath.row].recipe.image
+            
+            cell.recipeNameStr = isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.label : recipeViewModel.recipesList[indexPath.row].recipe.label
+            
+            cell.sourceStr =  isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.source : recipeViewModel.recipesList[indexPath.row].recipe.source
+            
+            var healthLabels: String = ""
+
+            if isFilter {
+                recipeViewModel.filteredList[indexPath.row].recipe.healthLabels.forEach { (label) in
+                    if !healthLabels.isEmpty {
+                        healthLabels.append(", ")
+                    }
+                    healthLabels.append("\(label)")
+                }
+            } else {
+                recipeViewModel.recipesList[indexPath.row].recipe.healthLabels.forEach { (label) in
+                    if !healthLabels.isEmpty {
+                        healthLabels.append(", ")
+                    }
+                    healthLabels.append("\(label)")
+                }
+            }
+            
+            cell.healthLabelsStr = healthLabels
+            
+            cell.configure()
+            return cell
         case .loader:
-            cell.textLabel?.text = "LOADING...."
+            let cell = tableView.dequeueReusableCell(withIdentifier: "loadingCell", for: indexPath) as! LoadingTableViewCell
+            return cell
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailsVC = storyboard?.instantiateViewController(withIdentifier: "detailsVC") as! DetailsViewController
+        detailsVC.imageURL = isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.image : recipeViewModel.recipesList[indexPath.row].recipe.image
         
-        return cell
+        detailsVC.ingredients = isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.ingredientLines : recipeViewModel.recipesList[indexPath.row].recipe.ingredientLines
+        detailsVC.recipeNameStr = isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.label : recipeViewModel.recipesList[indexPath.row].recipe.label
+        detailsVC.shareUrl = isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.shareAs : recipeViewModel.recipesList[indexPath.row].recipe.shareAs
+        detailsVC.websiteUrl = isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.url : recipeViewModel.recipesList[indexPath.row].recipe.url
+        self.navigationController?.pushViewController(detailsVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -96,6 +135,15 @@ extension RecipesViewController: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
             }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let tableRowType = TableRowType(rawValue: indexPath.section) else { return 0 }
+        if tableRowType == .recipe {
+            return 180
+        } else {
+            return 60
         }
     }
     

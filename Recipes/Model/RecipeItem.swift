@@ -14,4 +14,5 @@ struct RecipeItem : Codable {
     let healthLabels : [String]
     let ingredientLines : [String]
     let url : String
+    let shareAs : String
 }
