@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DropDown
 
 class RecipesViewController: UIViewController {
 
@@ -22,6 +23,10 @@ class RecipesViewController: UIViewController {
     var selectedFilter = ""
     var currentSelected = 0
     
+    let dropDown = DropDown()
+    let userDefaults = UserDefaults.standard
+    var searchHistoryArray = [String]()
+    
     enum TableRowType : Int {
         case recipe
         case loader
@@ -37,7 +42,52 @@ class RecipesViewController: UIViewController {
         filtersCollectionView.isHidden = true
         searchBar.delegate = self
         
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+
+           view.addGestureRecognizer(tap)
+        
+        getSearchHistory()
+        dropDownConfig()
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        searchBar.endEditing(true)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    // MARK: - DropDown Configuration
+    
+    func dropDownConfig() {
+        dropDown.anchorView = searchBar
+        dropDown.bottomOffset = CGPoint(x: 0, y: (dropDown.anchorView?.plainView.bounds.height)!)
+        dropDown.direction = .bottom
+        dropDown.dataSource = searchHistoryArray.reversed()
+        dropDown.selectionAction = { (index, item) in
+            self.searchBar.text = item
+            self.query = item
+        }
+    }
+    
+    // MARK: - Search history
+    func addToSearchHistory(searchQuery : String){
+        if searchHistoryArray.count == 10 {
+            searchHistoryArray.remove(at: 0)
+        }
+        searchHistoryArray.append(searchQuery)
+        userDefaults.set(searchHistoryArray, forKey: Constants.SEARCH_HISTORY)
+    }
+    
+    
+    func getSearchHistory(){
+        if userDefaults.object(forKey: Constants.SEARCH_HISTORY) != nil {
+            searchHistoryArray = userDefaults.object(forKey: Constants.SEARCH_HISTORY) as! [String]
+            dropDown.reloadAllComponents()
+        }
+    }
+    
 }
 
 extension RecipesViewController: UITableViewDelegate, UITableViewDataSource {
@@ -220,8 +270,19 @@ extension RecipesViewController: UISearchBarDelegate {
         query = searchText
     }
     
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        dropDown.show()
+        return true
+    }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        dropDown.hide()
+        searchBar.endEditing(true)
+        return true
+    }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
         if !query.isEmpty {
             activityIndicator.isHidden = false
             activityIndicator.startAnimating()
@@ -240,6 +301,13 @@ extension RecipesViewController: UISearchBarDelegate {
                     self.activityIndicator.isHidden = true
                     self.messageLabel.isHidden = true
                     self.recipesTableView.reloadData()
+                    
+                    if !self.searchHistoryArray.contains(self.query) {
+                        self.addToSearchHistory(searchQuery: self.query)
+                    }
+                    self.getSearchHistory()
+                    self.dropDown.dataSource = self.searchHistoryArray.reversed()
+
                 } else {
                     self.filtersCollectionView.isHidden = true
                     self.recipesTableView.isHidden = true

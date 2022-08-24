@@ -8,5 +8,6 @@ target 'Recipes' do
   # Pods for Recipes
   pod 'Alamofire', '~> 5.4'
   pod 'AlamofireImage', '~> 4.1'
+  pod 'DropDown', '2.3.13'
 
 end

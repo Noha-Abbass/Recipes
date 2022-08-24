@@ -14,7 +14,7 @@ class Constants {
     static let APP_KEY = "ef408494f16cd50ad6752e1e82d6db9f"
     
     static let FILTERS_ARRAY = ["ALL", "LOW SUGAR", "KETO", "VEGAN"]
-
+    static let SEARCH_HISTORY = "searchHistory"
 
 }
 
