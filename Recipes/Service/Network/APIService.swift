@@ -12,15 +12,19 @@ class APIService : DataHandlingProtocol {
     static var shared = APIService()
     private init() {}
     
-    func getAllRecipes(urlString: String, query: String, page: Int, completion: @escaping (Result<[Recipe], Error>) -> ()) {
+    func getAllRecipes(urlString: String, query: String, healthFilter: String?, page: Int, completion: @escaping (Result<[Recipe], Error>) -> ()) {
         var components = URLComponents(string: urlString)
         components?.queryItems = [
             URLQueryItem(name: "app_id", value: Constants.APP_ID),
             URLQueryItem(name: "app_key", value: Constants.APP_KEY),
             URLQueryItem(name: "q", value: query),
             URLQueryItem(name: "from", value: "\(page)")
-
         ]
+        
+        if let _ = healthFilter {
+            components?.queryItems?.append(URLQueryItem(name: "health", value: healthFilter))
+        }
+        
         guard let url = components?.url else { return }
         AF.request(url)
             .validate()
@@ -32,6 +36,7 @@ class APIService : DataHandlingProtocol {
                         completion(.success([]))
                     }
                 } else {
+                    print("url = \(result.request?.url)")
                     completion(.failure(result.error!))
                 }
                 

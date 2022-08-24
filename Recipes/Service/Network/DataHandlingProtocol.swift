@@ -8,5 +8,5 @@
 import Foundation
 
 protocol DataHandlingProtocol {
-    func getAllRecipes(urlString: String, query: String, page: Int, completion: @escaping (Result<[Recipe], Error>) -> ())
+    func getAllRecipes(urlString: String, query: String, healthFilter: String?, page: Int, completion: @escaping (Result<[Recipe], Error>) -> ())
 }

@@ -10,8 +10,8 @@ import Foundation
 class Constants {
     static let BASE_URL = "https://api.edamam.com/search"
     
-    static let APP_ID = "67246b4d"
-    static let APP_KEY = "c1bfe446f0b7d177710653deaf75ce7d"
+    static let APP_ID = "5c320e4c"
+    static let APP_KEY = "ef408494f16cd50ad6752e1e82d6db9f"
     
     static let FILTERS_ARRAY = ["ALL", "LOW SUGAR", "KETO", "VEGAN"]
 
