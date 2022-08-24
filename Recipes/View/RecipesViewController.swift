@@ -42,20 +42,18 @@ class RecipesViewController: UIViewController {
         filtersCollectionView.isHidden = true
         searchBar.delegate = self
         
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
-
-           view.addGestureRecognizer(tap)
-        
         getSearchHistory()
         dropDownConfig()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        searchBar.endEditing(true)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "background")!).withAlphaComponent(0.9)
     }
     
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        searchBar.endEditing(true)
     }
     
     // MARK: - DropDown Configuration
@@ -215,7 +213,7 @@ extension RecipesViewController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! FilterCollectionViewCell
         cell.configure(with: Constants.FILTERS_ARRAY[indexPath.row])
-        cell.backgroundColor = currentSelected == indexPath.row ? .purple : .gray
+        cell.backgroundColor = currentSelected == indexPath.row ? UIColor(red: 63/255, green: 121/255, blue: 66/255, alpha: 1) : .gray
         return cell
     }
     

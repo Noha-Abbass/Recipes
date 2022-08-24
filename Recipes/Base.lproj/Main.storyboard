@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="iMs-Li-HHS">
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search.." translatesAutoresizingMaskIntoConstraints="NO" id="iMs-Li-HHS">
                                 <rect key="frame" x="0.0" y="140" width="414" height="56"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -26,8 +26,8 @@
                                 <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search for recipes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j0e-YR-R4U">
-                                <rect key="frame" x="138" y="437.5" width="138.5" height="21"/>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                                <rect key="frame" x="111" y="433.5" width="192" height="29"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -123,7 +123,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t1N-Qu-EAB">
+                            <view alpha="0.80000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t1N-Qu-EAB">
                                 <rect key="frame" x="0.0" y="344" width="414" height="552"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lp0-Fr-chN">
@@ -164,11 +164,11 @@
                                     </tableView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dOf-1Y-CLG">
                                         <rect key="frame" x="83" y="472" width="248" height="50"/>
-                                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" red="0.24705882352941178" green="0.47450980392156861" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="PZ7-LZ-Vf5"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="19"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                         <state key="normal" title="Recipe Website"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -180,7 +180,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="dOf-1Y-CLG" secondAttribute="bottom" constant="30" id="0Wc-PD-x9d"/>
                                     <constraint firstItem="6Gz-8O-uEg" firstAttribute="top" secondItem="lp0-Fr-chN" secondAttribute="bottom" constant="28" id="7z7-ey-I9f"/>
@@ -201,7 +201,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ITm-ic-gLm"/>
-                        <color key="backgroundColor" systemColor="systemGray4Color"/>
+                        <color key="backgroundColor" red="0.81176470588235294" green="0.8901960784313725" blue="0.83137254901960778" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="t1N-Qu-EAB" firstAttribute="top" secondItem="ta4-tk-sNe" secondAttribute="bottom" constant="26" id="B21-7V-n8I"/>
                             <constraint firstItem="t1N-Qu-EAB" firstAttribute="leading" secondItem="ITm-ic-gLm" secondAttribute="leading" id="Cop-De-zPw"/>
