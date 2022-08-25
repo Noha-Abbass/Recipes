@@ -109,7 +109,7 @@ extension RecipesViewController: UITableViewDelegate, UITableViewDataSource {
         
         switch tableRowType {
         case .recipe:
-            var cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RecipeTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! RecipeTableViewCell
             cell.imageUrl = isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.image : recipeViewModel.recipesList[indexPath.row].recipe.image
             
             cell.recipeNameStr = isFilter ? recipeViewModel.filteredList[indexPath.row].recipe.label : recipeViewModel.recipesList[indexPath.row].recipe.label
@@ -281,12 +281,16 @@ extension RecipesViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.endEditing(true)
+        currentSelected = 0
+        isFilter = false
+        filtersCollectionView.reloadData()
         if !query.isEmpty {
             activityIndicator.isHidden = false
             activityIndicator.startAnimating()
             messageLabel.isHidden = true
             filtersCollectionView.isHidden = false
             recipeViewModel.recipesList = []
+            recipeViewModel.filteredList = []
             recipeViewModel.nothingToShow = false
             recipeViewModel.page = 0
             recipeViewModel.filterNothingToShow = false
@@ -299,7 +303,8 @@ extension RecipesViewController: UISearchBarDelegate {
                     self.activityIndicator.isHidden = true
                     self.messageLabel.isHidden = true
                     self.recipesTableView.reloadData()
-                    
+                    self.recipesTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+
                     if !self.searchHistoryArray.contains(self.query) {
                         self.addToSearchHistory(searchQuery: self.query)
                     }

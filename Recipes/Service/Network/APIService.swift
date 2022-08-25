@@ -36,7 +36,7 @@ class APIService : DataHandlingProtocol {
                         completion(.success([]))
                     }
                 } else {
-                    print("url = \(result.request?.url)")
+                    print("url = \(String(describing: result.request?.url))")
                     completion(.failure(result.error!))
                 }
                 
